@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ season }}</h2>
+    <div id="plot"></div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        var graphJSON = {{ graphJSON | safe }};
+        Plotly.newPlot('plot', JSON.parse(graphJSON));
+    </script>
+{% endblock %}

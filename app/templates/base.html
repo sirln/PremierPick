@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <!-- Add any common CSS/JS imports here -->
+</head>
+<body>
+    <header>
+        <h1>Fantasy Premier League App</h1>
+        <!-- Add navigation links here -->
+    </header>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        <!-- Add footer content here -->
+    </footer>
+</body>
+</html>
