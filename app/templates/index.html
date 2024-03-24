@@ -1,6 +1,31 @@
 {% extends "base.html" %}
-
+{% block title %} PremierPick Chart {% endblock %}
+{% block externalScript %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> {% endblock %}
 {% block content %}
-    <h2>Welcome to Fantasy Premier League App!</h2>
-    <!-- Add homepage content here -->
+    <canvas id="myChart" width="400" height="400"></canvas>
+{% endblock %}
+{% block internalScript %}
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ player_names | tojson }},
+                datasets: [{
+                    label: 'Player Points',
+                    data: {{ player_points | tojson }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}
