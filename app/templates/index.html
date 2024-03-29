@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+<!-- {% extends "base.html" %}
 {% block title %} PremierPick Chart {% endblock %}
 {% block externalScript %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> {% endblock %}
 {% block content %}
@@ -29,3 +29,59 @@
         });
     </script>
 {% endblock %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FPL Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="pointsChart" width="400" height="400"></canvas>
+    <canvas id="formChart" width="400" height="400"></canvas>
+    <canvas id="costChart" width="400" height="400"></canvas>
+    <canvas id="ownershipChart" width="400" height="400"></canvas>
+
+    <script>
+        var ctx = document.getElementById('pointsChart').getContext('2d');
+        var pointsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ player_names | tojson }},
+                datasets: [{
+                    label: 'Total Points',
+                    data: {{ total_points | tojson }},
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Repeat similar code for other charts (form, cost, ownership)
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FPL Player Analysis</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>FPL Player Analysis</h1>
+    <form method="post">
+        <label for="player_id">Enter Player ID:</label>
+        <input type="text" id="player_id" name="player_id" required>
+        <button type="submit">Submit</button>
+    </form>
+    {% if player_data %}
+        <h2>Player Name: {{ player_data['player']['web_name'] }}</h2>
+        <h3>Team: {{ player_data['player']['team'] }}</h3>
+        <h3>Total Points: {{ player_data['total_points'] }}</h3>
+        <h3>Goals Scored: {{ player_data['goals_scored'] }}</h3>
+        <!-- Add more player data as needed -->
+    {% endif %}
+</body>
+</html>
