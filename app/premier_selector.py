@@ -155,10 +155,10 @@ def select_players(position_id, num_players, players):
     return position_players
 
 # Select players for each position
-goalkeepers = select_players(1, 5, players)
+goalkeepers = select_players(1, 8, players)
 defenders = select_players(2, 12, players)
 midfielders = select_players(3, 12, players)
-forwards = select_players(4, 9, players)
+forwards = select_players(4, 8, players)
 
 # # Print selected players
 # print("Selected Goalkeepers:")

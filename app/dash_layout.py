@@ -1,41 +1,44 @@
-# import dash
-# import plotly.graph_objs as go
+import pandas as pd
+import dash_bootstrap_components as dbc
 from dash import dcc, html
 from dash.dependencies import Input, Output
 from app.premier_selector import goalkeepers, defenders, midfielders, forwards
 
-# # Create Dash application
-# dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
-
-
-# app.layout = html.Div(
-#     children=[
-#         html.H1("Premier Pick Dashboard"),
-#         html.Div(id='graphs-container')
-#     ]
-# )
-
-
-def generate_graphs(players, title):
-    return dcc.Graph(
-        figure={
-            'data': [
-                {'x': [player.name for player in players], 'y': [player.form for player in players], 'type': 'bar', 'name': 'Form'},
-                {'x': [player.name for player in players], 'y': [player.points for player in players], 'type': 'bar', 'name': 'Total Points'}
-            ],
-            'layout': {
-                'title': title
-            }
-        }
+# Function to generate table from DataFrame
+def generate_table_from_dataframe(df, title):
+    # Convert DataFrame to HTML table
+    table = dbc.Table.from_dataframe(
+        df,
+        striped=True,
+        bordered=True,
+        hover=True,
+        responsive=True,
+        className="mt-4"
     )
 
+    return html.Div([
+        html.H3(title),
+        table
+    ])
 
+
+# Function to create the layout of your Dash app
 def create_dash_layout(app):
-    app.layout = html.Div(
-        children=[
-            html.H1("Premier Pick Dashboard"),
-            html.Div(id='graphs-container')
-        ]
+    app.layout = dbc.Container(
+        [
+            dbc.Row(
+                dbc.Col(
+                    html.H1("Premier Pick Dashboard", className="mt-4 text-center") 
+                )
+            ),
+            html.Div(id='graphs-container', className="mt-4"),
+            dcc.Interval(
+                id='interval-component',
+                interval=1000,  # Update interval in milliseconds
+                n_intervals=0
+            )
+        ],
+        fluid=True,
     )
 
     @app.callback(
@@ -43,16 +46,21 @@ def create_dash_layout(app):
         [Input('interval-component', 'n_intervals')]
     )
     def update_layout(n):
-        goalkeepers_graph = generate_graphs(goalkeepers, "Goalkeepers Form and Total Points")
-        defenders_graph = generate_graphs(defenders, "Defenders Form and Total Points")
-        midfielders_graph = generate_graphs(midfielders, "Midfielders Form and Total Points")
-        forwards_graph = generate_graphs(forwards, "Forwards Form and Total Points")
+        print("Callback triggered with n_intervals:", n)
+        # Convert player data to DataFrame
+        goalkeepers_df = pd.DataFrame([(p.name, p.form, p.points) for p in goalkeepers], columns=["Name", "Form", "Total Points"])
+        defenders_df = pd.DataFrame([(p.name, p.form, p.points) for p in defenders], columns=["Name", "Form", "Total Points"])
+        midfielders_df = pd.DataFrame([(p.name, p.form, p.points) for p in midfielders], columns=["Name", "Form", "Total Points"])
+        forwards_df = pd.DataFrame([(p.name, p.form, p.points) for p in forwards], columns=["Name", "Form", "Total Points"])
 
-        graphs_container = html.Div([
-            html.Div(goalkeepers_graph, className='graph-container'),
-            html.Div(defenders_graph, className='graph-container'),
-            html.Div(midfielders_graph, className='graph-container'),
-            html.Div(forwards_graph, className='graph-container')
-        ], id='graphs-container')
+        goalkeepers_table = generate_table_from_dataframe(goalkeepers_df, "Goalkeepers Form and Total Points")
+        defenders_table = generate_table_from_dataframe(defenders_df, "Defenders Form and Total Points")
+        midfielders_table = generate_table_from_dataframe(midfielders_df, "Midfielders Form and Total Points")
+        forwards_table = generate_table_from_dataframe(forwards_df, "Forwards Form and Total Points")
 
-        return graphs_container
+        return dbc.Row([
+            dbc.Col(goalkeepers_table, md=6),
+            dbc.Col(forwards_table, md=6),
+            dbc.Col(defenders_table, md=6),
+            dbc.Col(midfielders_table, md=6),
+        ])
