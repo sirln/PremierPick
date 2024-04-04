@@ -14,8 +14,8 @@ external_stylesheets = [
         "rel": "stylesheet",
     },
 ]
-dash_app = Dash(__name__, server=app, url_base_pathname='/dash/', external_stylesheets=[external_stylesheets, themes.CERULEAN])
-# dash_app = Dash(__name__, server=app, url_base_pathname='/dash/', external_stylesheets=[themes.BOOTSTRAP])
+
+dash_app = Dash(__name__, server=app, url_base_pathname='/dash/', external_stylesheets=[themes.VAPOR])
 
 # Suppress exception for missing component IDs
 dash_app.config.suppress_callback_exceptions = True
