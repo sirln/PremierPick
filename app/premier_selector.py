@@ -75,7 +75,6 @@ def fetch_club_name(team_id, teams):
 def calculate_form_score(player_id):
     fixtures = fetch_last_7_fixtures(player_id)
     # Calculate form score based on fixtures
-    # Add your calculation logic here
     return sum(fixture['total_points'] for fixture in fixtures) / 7
 
 # Fetch player data from FPL API
@@ -160,26 +159,3 @@ defenders = select_players(2, 12, players)
 midfielders = select_players(3, 12, players)
 forwards = select_players(4, 10, players)
 
-# # Print selected players
-# print("Selected Goalkeepers:")
-# for i, player in enumerate(goalkeepers, 1):
-#     #print(f"{i}. {player.name} - {player.club} - {player.form} - {player.points} points - {player.element_type}")
-#     print(f"{i}. {player.name} - {player.club} - {player.form} form - {player.points} points - {(player.value)/10} value")
-
-
-# print("\nSelected Defenders:")
-# for i, player in enumerate(defenders, 1):
-#     #print(f"{i}. {player.name} - {player.club} - {player.form} - {player.points} points - {player.element_type}")
-#     print(f"{i}. {player.name} - {player.club} - {player.form} - {player.points} points - {(player.value)/10} value")
-
-
-# print("\nSelected Midfielders:")
-# for i, player in enumerate(midfielders, 1):
-#     #print(f"{i}. {player.name} - {player.club} - {player.form} - {player.points} points - {player.element_type}")
-#     print(f"{i}. {player.name} - {player.club} - {player.form} - {player.points} points - {(player.value - 1)/10 } value")
-
-
-# print("\nSelected Forwards:")
-# for i, player in enumerate(forwards, 1):
-#     #print(f"{i}. {player.name} - {player.club} - {player.form} - {player.points} points - {player.element_type}")
-#     print(f"{i}. {player.name} - {player.club} - {player.form} - {player.points} points - {(player.value)/10} value")

@@ -1,8 +1,8 @@
-import requests
 import pandas as pd
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
+from app.player_stats_layout import load_player_stats
 from app.premier_selector import goalkeepers, defenders, midfielders, forwards
 
 background_color = 'darkgray'
@@ -48,7 +48,6 @@ def create_dash_layout(app):
                 )
             ),
             dcc.Location(id='url', refresh=False),
-            html.Div(id='page-content', className="mt-4"),
             html.Div(id='graphs-container', className="mt-4"),
             dcc.Interval(
                 id='interval-component',
@@ -61,28 +60,32 @@ def create_dash_layout(app):
 
     @app.callback(
         Output('graphs-container', 'children'),
-        [Input('interval-component', 'n_intervals')]
+        [Input('interval-component', 'n_intervals'),
+          Input('url', 'pathname')]
     )
-    def update_layout(n):
-        print("Callback triggered with n_intervals:", n)
-        # Convert player data to DataFrame
-        goalkeepers_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in goalkeepers], columns=["Name", "Form", "Total Points", "Player Value"])
-        defenders_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in defenders], columns=["Name", "Form", "Total Points", "Player Value"])
-        midfielders_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in midfielders], columns=["Name", "Form", "Total Points", "Player Value"])
-        forwards_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in forwards], columns=["Name", "Form", "Total Points", "Player Value"])
+    def update_layout(n, pathname):
+        if pathname and pathname.startswith("/player/"):
+            player_name = pathname.split("/player/")[-1]
+            return load_player_stats(player_name)
+        else:
+            # Convert player data to DataFrame
+            goalkeepers_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in goalkeepers], columns=["Name", "Form", "Total Points", "Player Value"])
+            defenders_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in defenders], columns=["Name", "Form", "Total Points", "Player Value"])
+            midfielders_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in midfielders], columns=["Name", "Form", "Total Points", "Player Value"])
+            forwards_df = pd.DataFrame([(p.name, p.form, p.points, (p.value/10)) for p in forwards], columns=["Name", "Form", "Total Points", "Player Value"])
 
-        goalkeepers_table = generate_table_from_dataframe(goalkeepers_df, "Goalkeepers Form and Total Points")
-        defenders_table = generate_table_from_dataframe(defenders_df, "Defenders Form and Total Points")
-        midfielders_table = generate_table_from_dataframe(midfielders_df, "Midfielders Form and Total Points")
-        forwards_table = generate_table_from_dataframe(forwards_df, "Forwards Form and Total Points")
+            goalkeepers_table = generate_table_from_dataframe(goalkeepers_df, "Goalkeepers Form and Total Points")
+            defenders_table = generate_table_from_dataframe(defenders_df, "Defenders Form and Total Points")
+            midfielders_table = generate_table_from_dataframe(midfielders_df, "Midfielders Form and Total Points")
+            forwards_table = generate_table_from_dataframe(forwards_df, "Forwards Form and Total Points")
 
-        return html.Div([
-            dbc.Row([
-                dbc.Col(goalkeepers_table, md=6),
-                dbc.Col(forwards_table, md=6),
-            ], style={'margin-bottom': '20px', 'background-color': background_color}),
-            dbc.Row([
-                dbc.Col(defenders_table, md=6),
-                dbc.Col(midfielders_table, md=6),
-            ], style={'background-color': background_color}),
-        ])
+            return html.Div([
+                dbc.Row([
+                    dbc.Col(goalkeepers_table, md=6),
+                    dbc.Col(forwards_table, md=6),
+                ], style={'margin-bottom': '20px', 'background-color': background_color}),
+                dbc.Row([
+                    dbc.Col(defenders_table, md=6),
+                    dbc.Col(midfielders_table, md=6),
+                ], style={'background-color': background_color}),
+            ])

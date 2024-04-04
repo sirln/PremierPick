@@ -40,7 +40,6 @@ def fetch_last_7_fixtures(player_id):
 
 # Function to calculate goalkeeper form
 def calculate_goalkeeper_form(player_id):
-    # Placeholder function to return form score
     # Fetching last 7 fixtures data for the goalkeeper
     fixtures = fetch_last_7_fixtures(player_id)
     if not fixtures:
@@ -73,7 +72,6 @@ def calculate_goalkeeper_form(player_id):
 
 # Function to calculate defender form
 def calculate_defender_form(player_id):
-    # Placeholder function to return form score
     # Fetching last 7 fixtures data for the defender
     fixtures = fetch_last_7_fixtures(player_id)
     if not fixtures:
@@ -108,7 +106,6 @@ def calculate_defender_form(player_id):
 
 # Function to calculate midfielder form
 def calculate_midfielder_form(player_id):
-    # Placeholder function to return form score
     # Fetching last 7 fixtures data for the midfielder
     fixtures = fetch_last_7_fixtures(player_id)
     if not fixtures:
@@ -143,7 +140,6 @@ def calculate_midfielder_form(player_id):
 
 # Function to calculate forward form
 def calculate_forward_form(player_id):
-    # Placeholder function to return form score
     # Fetching last 7 fixtures data for the forward
     fixtures = fetch_last_7_fixtures(player_id)
     if not fixtures:
