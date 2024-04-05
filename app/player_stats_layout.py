@@ -43,41 +43,119 @@ def load_player_stats(player_name):
     player_statistics = data['history'] if data else []
 
     if player_statistics:
-        return generate_player_stats(player_statistics, player_name)
+        return generate_player_stats(player_statistics, player_name, player_id)
     else:
         print(f"Player '{player_name}' data not found or error loading data.")
         return html.Div(f"No valid data found for player '{player_name}'.")
 
-def generate_player_stats(player_stats, player_name):
+def generate_player_stats(player_stats, player_name, player_id):
     try:
         # Extract relevant stats
         gameweeks = [entry['round'] for entry in player_stats]
         total_points = [entry['total_points'] for entry in player_stats]
         goals_scored = [entry['goals_scored'] for entry in player_stats]
         assists = [entry['assists'] for entry in player_stats]
+        bonus_points = [entry['bonus'] for entry in player_stats]
+        clean_sheets = [entry['clean_sheets'] for entry in player_stats]
 
-        # Create Plotly traces with smooth lines and markers
+        # Fetch player position
+        player_position = next((player['element_type'] for player in players_data if player['id'] == player_id), None)
 
-        total_points_trace = go.Scatter(x=gameweeks, y=total_points, mode='lines+markers', name='Total Points', marker=dict(color='blue'), line=dict(shape='spline'))
-        goals_scored_trace = go.Scatter(x=gameweeks, y=goals_scored, mode='lines+markers', name='Goals Scored', marker=dict(color='green'), line=dict(shape='spline'))
-        assists_trace = go.Scatter(x=gameweeks, y=assists, mode='lines+markers', name='Assists', marker=dict(color='red'), line=dict(shape='spline'))
+        # Customize visualization based on player position
+        if player_position == 1:  # Goalkeeper
+            # Customize visualization for goalkeeper
+            saves = [entry['saves'] for entry in player_stats]
+            penalties_saved = [entry['penalties_saved'] for entry in player_stats]
 
-        # Create layout
-        layout = go.Layout(
-            title=f"Performance of {player_name} in the 2023/24 season",
-            xaxis=dict(title='Gameweeks'),
-            yaxis=dict(title='Stats'),
-            legend=dict(orientation='h'),
-            plot_bgcolor = 'rgba(255, 228, 196, 0.9)',
-            paper_bgcolor = 'rgba(47, 79, 79, 0.3)',
-            margin=dict(l=40, r=40, t=80, b=40)
-        )
+            # Create traces for goalkeeper
+            saves_trace = go.Scatter(x=gameweeks, y=saves, mode='lines+markers', name='Saves', marker=dict(color='purple'), line=dict(shape='spline'))
+            penalties_saved_trace = go.Scatter(x=gameweeks, y=penalties_saved, mode='lines+markers', name='Penalties Saved', marker=dict(color='orange'), line=dict(shape='spline'))
+            clean_sheets_trace = go.Scatter(x=gameweeks, y=clean_sheets, mode='lines+markers', name='Clean Sheets', marker=dict(color='blue'), line=dict(shape='spline'))
+            bonus_points_trace = go.Scatter(x=gameweeks, y=bonus_points, mode='lines+markers', name='Bonus Points', marker=dict(color='green'), line=dict(shape='spline'))
 
-        # Create figure
-        fig = go.Figure(data=[total_points_trace, goals_scored_trace, assists_trace], layout=layout)
+            # Update layout
+            layout = go.Layout(
+                title=f"Performance of {player_name} (Goalkeeper) in the 2023/24 season",
+                xaxis=dict(title='Gameweeks'),
+                yaxis=dict(title='Stats'),
+                legend=dict(orientation='h'),
+                plot_bgcolor='rgba(255, 228, 196, 0.9)',
+                paper_bgcolor='rgba(47, 79, 79, 0.3)',
+                margin=dict(l=40, r=40, t=80, b=40)
+            )
+
+            # Create figure
+            fig = go.Figure(data=[saves_trace, penalties_saved_trace, clean_sheets_trace, bonus_points_trace], layout=layout)
+
+        elif player_position == 2:  # Defender
+            # Customize visualization for defender
+
+            # Create traces for defender
+            clean_sheets_trace = go.Scatter(x=gameweeks, y=clean_sheets, mode='lines+markers', name='Clean Sheets', marker=dict(color='blue'), line=dict(shape='spline'))
+            assists_trace = go.Scatter(x=gameweeks, y=assists, mode='lines+markers', name='Assists', marker=dict(color='green'), line=dict(shape='spline'))
+            goals_scored_trace = go.Scatter(x=gameweeks, y=goals_scored, mode='lines+markers', name='Goals Scored', marker=dict(color='red'), line=dict(shape='spline'))
+            bonus_points_trace = go.Scatter(x=gameweeks, y=bonus_points, mode='lines+markers', name='Bonus Points', marker=dict(color='purple'), line=dict(shape='spline'))
+
+            # Update layout
+            layout = go.Layout(
+                title=f"Performance of {player_name} (Defender) in the 2023/24 season",
+                xaxis=dict(title='Gameweeks'),
+                yaxis=dict(title='Stats'),
+                legend=dict(orientation='h'),
+                plot_bgcolor='rgba(255, 228, 196, 0.9)',
+                paper_bgcolor='rgba(47, 79, 79, 0.3)',
+                margin=dict(l=40, r=40, t=80, b=40)
+            )
+
+            # Create figure
+            fig = go.Figure(data=[clean_sheets_trace, assists_trace, goals_scored_trace, bonus_points_trace], layout=layout)
+
+        elif player_position == 3:  # Midfielder
+            # Customize visualization for midfielder
+
+            # Create traces for midfielder
+            clean_sheets_trace = go.Scatter(x=gameweeks, y=clean_sheets, mode='lines+markers', name='Clean Sheets', marker=dict(color='blue'), line=dict(shape='spline'))
+            assists_trace = go.Scatter(x=gameweeks, y=assists, mode='lines+markers', name='Assists', marker=dict(color='green'), line=dict(shape='spline'))
+            goals_scored_trace = go.Scatter(x=gameweeks, y=goals_scored, mode='lines+markers', name='Goals Scored', marker=dict(color='red'), line=dict(shape='spline'))
+            bonus_points_trace = go.Scatter(x=gameweeks, y=bonus_points, mode='lines+markers', name='Bonus Points', marker=dict(color='purple'), line=dict(shape='spline'))
+
+            # Update layout
+            layout = go.Layout(
+                title=f"Performance of {player_name} (Midfielder) in the 2023/24 season",
+                xaxis=dict(title='Gameweeks'),
+                yaxis=dict(title='Stats'),
+                legend=dict(orientation='h'),
+                plot_bgcolor='rgba(255, 228, 196, 0.9)',
+                paper_bgcolor='rgba(47, 79, 79, 0.3)',
+                margin=dict(l=40, r=40, t=80, b=40)
+            )
+
+            # Create figure
+            fig = go.Figure(data=[clean_sheets_trace, assists_trace, goals_scored_trace, bonus_points_trace], layout=layout)
+
+        elif player_position == 4:  # Forward
+            # Customize visualization for forward
+
+            # Create traces for forward
+            assists_trace = go.Scatter(x=gameweeks, y=assists, mode='lines+markers', name='Assists', marker=dict(color='green'), line=dict(shape='spline'))
+            goals_scored_trace = go.Scatter(x=gameweeks, y=goals_scored, mode='lines+markers', name='Goals Scored', marker=dict(color='red'), line=dict(shape='spline'))
+            bonus_points_trace = go.Scatter(x=gameweeks, y=bonus_points, mode='lines+markers', name='Bonus Points', marker=dict(color='purple'), line=dict(shape='spline'))
+
+            # Update layout
+            layout = go.Layout(
+                title=f"Performance of {player_name} (Forward) in the 2023/24 season",
+                xaxis=dict(title='Gameweeks'),
+                yaxis=dict(title='Stats'),
+                legend=dict(orientation='h'),
+                plot_bgcolor='rgba(255, 228, 196, 0.9)',
+                paper_bgcolor='rgba(47, 79, 79, 0.3)',
+                margin=dict(l=40, r=40, t=80, b=40)
+            )
+
+            # Create figure
+            fig = go.Figure(data=[assists_trace, goals_scored_trace, bonus_points_trace], layout=layout)
 
         graph_height = 400
-
         card_body_min_height = graph_height + 50
 
         # Return the plot as a centered dbc.Card component with interactive elements
