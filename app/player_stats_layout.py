@@ -98,7 +98,7 @@ def generate_player_stats(player_stats, player_name):
                 className="shadow-sm bg-white rounded",
                 style={"width": "80%"}
             ),
-            className="d-flex justify-content-center align-items-center vh-100"
+            className="d-flex justify-content-center align-items-center vh-70"
         )
     except KeyError:
         return html.Div(f"No valid data found for player '{player_name}'.")
