@@ -4,6 +4,7 @@ from flask import request, render_template, send_from_directory
 
 
 @app.route('/')
+@app.route('/dash/')
 @app.route('/index')
 def index():
     current_time = datetime.now().strftime('%H:%M')
