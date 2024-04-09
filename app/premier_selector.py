@@ -2,6 +2,7 @@ import os
 import json
 import requests
 import pandas as pd
+from datetime import datetime
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from app.player_form_calculator import fetch_last_7_fixtures, DATA_DIR
@@ -18,10 +19,16 @@ def fetch_and_save_data(endpoint, filename):
     if os.path.exists(filepath):
         with open(filepath, 'r', encoding='utf-8') as f:
             existing_data = json.load(f)
+        if 'last_updated' in existing_data and 'last_updated' in data:
+            existing_last_updated = datetime.fromtimestamp(existing_data['last_updated'])
+            new_last_updated = datetime.fromtimestamp(data['last_updated'])
+            if existing_last_updated >= new_last_updated:
+                 return existing_data
         existing_data.update(data)
         data = existing_data
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
+    return data
 
 # Function to load data from a file
 def load_data_from_file(filepath):
