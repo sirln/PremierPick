@@ -103,7 +103,7 @@ def generate_player_stats(player_stats, player_name, player_id):
             assists_trace = go.Scatter(x=gameweeks, y=assists, mode='lines+markers', name='Assists', marker=dict(color='green'), line=dict(shape='spline'))
             goals_scored_trace = go.Scatter(x=gameweeks, y=goals_scored, mode='lines+markers', name='Goals Scored', marker=dict(color='red'), line=dict(shape='spline'))
             bonus_points_trace = go.Scatter(x=gameweeks, y=bonus_points, mode='lines+markers', name='Bonus Points', marker=dict(color='purple'), line=dict(shape='spline'))
-            points_trace = go.Scatter(x=gameweeks, y=points, mode='lines+markers', name='GW Points', marker=dict(color='red'), line=dict(shape='spline'))
+            points_trace = go.Scatter(x=gameweeks, y=points, mode='lines+markers', name='GW Points', marker=dict(color='orange'), line=dict(shape='spline'))
 
             # Update layout
             layout = go.Layout(
@@ -127,7 +127,7 @@ def generate_player_stats(player_stats, player_name, player_id):
             assists_trace = go.Scatter(x=gameweeks, y=assists, mode='lines+markers', name='Assists', marker=dict(color='green'), line=dict(shape='spline'))
             goals_scored_trace = go.Scatter(x=gameweeks, y=goals_scored, mode='lines+markers', name='Goals Scored', marker=dict(color='red'), line=dict(shape='spline'))
             bonus_points_trace = go.Scatter(x=gameweeks, y=bonus_points, mode='lines+markers', name='Bonus Points', marker=dict(color='purple'), line=dict(shape='spline'))
-            points_trace = go.Scatter(x=gameweeks, y=points, mode='lines+markers', name='GW Points', marker=dict(color='red'), line=dict(shape='spline'))
+            points_trace = go.Scatter(x=gameweeks, y=points, mode='lines+markers', name='GW Points', marker=dict(color='orange'), line=dict(shape='spline'))
 
             # Update layout
             layout = go.Layout(
@@ -150,7 +150,7 @@ def generate_player_stats(player_stats, player_name, player_id):
             assists_trace = go.Scatter(x=gameweeks, y=assists, mode='lines+markers', name='Assists', marker=dict(color='green'), line=dict(shape='spline'))
             goals_scored_trace = go.Scatter(x=gameweeks, y=goals_scored, mode='lines+markers', name='Goals Scored', marker=dict(color='red'), line=dict(shape='spline'))
             bonus_points_trace = go.Scatter(x=gameweeks, y=bonus_points, mode='lines+markers', name='Bonus Points', marker=dict(color='purple'), line=dict(shape='spline'))
-            points_trace = go.Scatter(x=gameweeks, y=points, mode='lines+markers', name='GW Points', marker=dict(color='red'), line=dict(shape='spline'))
+            points_trace = go.Scatter(x=gameweeks, y=points, mode='lines+markers', name='GW Points', marker=dict(color='orange'), line=dict(shape='spline'))
 
             # Update layout
             layout = go.Layout(

@@ -35,7 +35,7 @@ def fetch_data(endpoint, filename):
 def fetch_last_7_fixtures(player_id):
     filename = f"player_{player_id}_fixtures.json"
     data = fetch_data(f"element-summary/{player_id}", filename)
-    return data['history'][-10:] if data else []
+    return data['history'][-7:] if data else []
 
 
 # Function to calculate goalkeeper form
